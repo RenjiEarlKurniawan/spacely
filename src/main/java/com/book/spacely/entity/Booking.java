@@ -26,7 +26,7 @@ public class Booking {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rooms_id", nullable = false)
+    @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
     @Column(name = "start_time", nullable = false)
