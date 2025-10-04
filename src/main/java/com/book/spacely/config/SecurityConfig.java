@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private static final String[] WHITE_LIST_URL = {
-            "/api/auth/**",
+            "/auth/**",
             "/api/v1/api-docs",
             "/api-docs/**",
             "/swagger-ui.html",
