@@ -1,5 +1,7 @@
 package com.book.spacely.controller;
 
+import com.book.spacely.dto.AuthenticationResponse;
+import com.book.spacely.dto.LoginRequest;
 import com.book.spacely.dto.RegistrationRequest;
 import com.book.spacely.service.AuthService;
 import lombok.Generated;
@@ -15,8 +17,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegistrationRequest request){
-        authService.register(request);
-        return ResponseEntity.ok("User registered succesfully");
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegistrationRequest request){
+        return ResponseEntity.ok(authService.register(request));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request){
+        return ResponseEntity.ok(authService.login(request));
     }
 }
