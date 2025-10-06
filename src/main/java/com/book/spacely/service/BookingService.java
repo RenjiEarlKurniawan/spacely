@@ -55,4 +55,16 @@ public class BookingService {
                 .endTime(savedBooking.getEndTime())
                 .build();
     }
+
+    public List<BookingResponse> getAllBookings(){
+        return bookingRepository.findAll().stream()
+                .map(booking -> BookingResponse.builder()
+                        .id(booking.getId())
+                        .roomName(booking.getRoom().getName())
+                        .userName(booking.getUser().getName())
+                        .startTime(booking.getStartTime())
+                        .endTime(booking.getEndTime())
+                        .build())
+                .toList();
+    }
 }
