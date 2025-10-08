@@ -20,7 +20,7 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping
-    public ResponseEntity<BookingResponse> createdBooking(@RequestBody BookingRequest request){
+    public ResponseEntity<BookingResponse> createBooking(@RequestBody BookingRequest request){
         BookingResponse response = bookingService.createBooking(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
