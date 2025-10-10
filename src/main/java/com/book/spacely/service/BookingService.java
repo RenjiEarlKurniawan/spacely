@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -77,5 +78,24 @@ public class BookingService {
                         .endTime(booking.getEndTime())
                         .build())
                 .toList();
+    }
+
+    public List<BookingResponse> getMyBookings() {
+
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+        List<Booking> bookings = bookingRepository.findAllByUserId(currentUser.getId());
+
+
+        return bookings.stream()
+                .map(booking -> BookingResponse.builder()
+                        .id(booking.getId())
+                        .roomName(booking.getRoom().getName())
+                        .userName(booking.getUser().getName())
+                        .startTime(booking.getStartTime())
+                        .endTime(booking.getEndTime())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

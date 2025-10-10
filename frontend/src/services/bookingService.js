@@ -8,3 +8,8 @@ export const createBooking = async (roomId, startTime, endTime) => {
   });
   return response.data;
 };
+
+export const getMyBookings = async () => {
+  const response = await apiClient.get("/bookings/my-bookings");
+  return response.data;
+};
