@@ -3,11 +3,24 @@ import { useEffect, useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import BookingDialog from "@/components/BookingDialog";
 
 const HomePage = () => {
   const [rooms, setRooms] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState(null);
+
+  const handleBooking = (room) => {
+    setSelectedRoom(room);
+    setIsDialogOpen(true);
+  };
+
+  const handleBookingSuccess = () => {
+    alert("booking berhasil");
+  };
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -48,17 +61,27 @@ const HomePage = () => {
           >
             <CardHeader>
               <CardTitle>{room.name}</CardTitle>
-              <CardDescription>Capacity: {room.capacity} people</CardDescription>
+              <CardDescription>Capacity: {room.capacity}</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
               <p>{room.description}</p>
             </CardContent>
             <CardFooter>
-              <Button className="w-full cursor-pointer">Book Now</Button>
+              <Button className="w-full cursor-pointer" onClick={() => handleBooking(room)}>
+                Book Now
+              </Button>
             </CardFooter>
           </Card>
         ))}
       </div>
+      {selectedRoom && (
+        <BookingDialog
+          room={selectedRoom}
+          isOpen={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          onSuccess={handleBookingSuccess}
+        />
+      )}
     </div>
   );
 };

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -22,27 +23,37 @@ public class BookingService {
     private final RoomRepository roomRepository;
 
     @Transactional
-    public BookingResponse createBooking(BookingRequest request){
+    public BookingResponse createBooking(BookingRequest request) {
+
+        LocalDateTime startDateTime = request.getStartTime();
+        LocalDateTime endDateTime = request.getEndTime();
+
+        if (startDateTime.isAfter(endDateTime) || startDateTime.isEqual(endDateTime)) {
+            throw new IllegalStateException("End time must be after start time.");
+        }
+
+
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Room room = roomRepository.findById(request.getRoomId())
                 .orElseThrow(() -> new IllegalStateException("Room not found"));
 
+
         List<Booking> overlappingBookings = bookingRepository.findOverlappingBookings(
                 request.getRoomId(),
-                request.getStartTime(),
-                request.getEndTime()
+                startDateTime,
+                endDateTime
         );
 
-        if(!overlappingBookings.isEmpty()){
-            throw new IllegalStateException("Room is already booked for the selected time slot!");
+        if (!overlappingBookings.isEmpty()) {
+            throw new IllegalStateException("Room is already booked for the selected time slot.");
         }
 
         Booking booking = Booking.builder()
                 .user(currentUser)
                 .room(room)
-                .startTime(request.getStartTime())
-                .endTime(request.getEndTime())
+                .startTime(startDateTime)
+                .endTime(endDateTime)
                 .build();
 
         Booking savedBooking = bookingRepository.save(booking);

@@ -17,4 +17,20 @@ apiClient.interceptors.request.use(
   }
 );
 
+apiClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && [401, 403].includes(error.response.status)) {
+      console.log("token tidak valid atau sudah kedaluwarsa");
+      console.log("logoout");
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 export default apiClient;
