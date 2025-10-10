@@ -1,8 +1,16 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
-import { FaRegUserCircle } from "react-icons/fa";
+import { useAuth } from "@/hooks/useAuth";
 
 const Header = () => {
+  const { userEmail } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
     <header className="flex justify-between items-center border-b h-16 px-8">
       <NavLink to="/home" className="text-2xl font-bold">
@@ -32,9 +40,12 @@ const Header = () => {
           )}
         </NavLink>
       </nav>
-      <NavLink to="/profile">
-        <FaRegUserCircle className="text-2xl" />
-      </NavLink>
+      <div className="flex items-center gap-4">
+        {userEmail && <span className="text-sm font-medium">Hi, {userEmail}</span>}
+        <Button onClick={handleLogout} variant="outline" size="sm">
+          Logout
+        </Button>
+      </div>
     </header>
   );
 };

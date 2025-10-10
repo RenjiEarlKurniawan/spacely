@@ -3,7 +3,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import MyBookingPage from "./pages/MyBookingPage.jsx";
-import ProfilePage from "./pages/ProfilePage.jsx";
+
 import Layout from "./components/Layout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import GuestRoute from "./components/GuestRoute.jsx";
@@ -22,7 +22,6 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/home" element={<HomePage />} />
             <Route path="/my-booking" element={<MyBookingPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Route>
       </Routes>
