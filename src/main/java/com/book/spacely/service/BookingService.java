@@ -99,11 +99,20 @@ public class BookingService {
                 .collect(Collectors.toList());
     }
 
-    public void deleteBooking(Long bookingId){
+    public void deleteBooking(Long bookingId) {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
+        boolean isManager = currentUser.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_MANAGER"));
+
+        if (!isManager && booking.getUser().getId() != currentUser.getId()) {
+            throw new IllegalStateException("You are not authorized to delete this booking");
+        }
+
         bookingRepository.delete(booking);
     }
+
 }

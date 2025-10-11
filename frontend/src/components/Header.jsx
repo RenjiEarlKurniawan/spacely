@@ -41,11 +41,18 @@ const Header = () => {
           )}
         </NavLink>
         {isManager && (
-          <NavLink to="/admin/rooms">
-            <Button variant="link" size="sm">
-              Admin
-            </Button>
-          </NavLink>
+          <>
+            <NavLink to="/admin/rooms">
+              <Button variant="link" size="sm">
+                Manage Room
+              </Button>
+            </NavLink>
+            <NavLink to="/admin/bookings">
+              <Button variant="link" size="sm">
+                Manage Bookings
+              </Button>
+            </NavLink>
+          </>
         )}
       </nav>
       <div className="flex items-center gap-4">

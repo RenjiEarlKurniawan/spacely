@@ -6,7 +6,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import RoomDialog from "@/components/RoomDialog";
 
-const AdminPage = () => {
+const AdminRoomPage = () => {
   const [rooms, setRooms] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -120,4 +120,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
+export default AdminRoomPage;
