@@ -7,6 +7,7 @@ import MyBookingPage from "./pages/MyBookingPage.jsx";
 import Layout from "./components/Layout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import GuestRoute from "./components/GuestRoute.jsx";
+import AdminPage from "./pages/AdminPage.jsx";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/home" element={<HomePage />} />
             <Route path="/my-booking" element={<MyBookingPage />} />
+            <Route path="/admin/rooms" element={<AdminPage />} />
           </Route>
         </Route>
       </Routes>

@@ -9,8 +9,12 @@ import com.book.spacely.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,9 +35,15 @@ public class AuthService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.MEMBER);
-
         User savedUser = userRepository.save(user);
-        var jwtToken = jwtService.generateToken(savedUser);
+
+        var claims = new HashMap<String, Object>();
+        claims.put("name", savedUser.getName());
+        claims.put("authorities", savedUser.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+
+        var jwtToken = jwtService.generateToken(claims, savedUser);
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
@@ -49,7 +59,12 @@ public class AuthService {
 
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
 
-        var jwtToken = jwtService.generateToken(user);
+        var claims = new HashMap<String, Object>();
+        claims.put("name", user.getName());
+        claims.put("authorities", user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+
+        var jwtToken = jwtService.generateToken(claims, user);
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)

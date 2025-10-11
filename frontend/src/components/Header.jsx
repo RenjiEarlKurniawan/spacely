@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 const Header = () => {
   const { userEmail } = useAuth();
   const navigate = useNavigate();
+  const { isManager } = useAuth();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -39,6 +40,13 @@ const Header = () => {
             </Button>
           )}
         </NavLink>
+        {isManager && (
+          <NavLink to="/admin/rooms">
+            <Button variant="link" size="sm">
+              Admin
+            </Button>
+          </NavLink>
+        )}
       </nav>
       <div className="flex items-center gap-4">
         {userEmail && <span className="text-sm font-medium">Hi, {userEmail}</span>}
