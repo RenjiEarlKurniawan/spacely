@@ -13,3 +13,7 @@ export const getMyBookings = async () => {
   const response = await apiClient.get("/bookings/my-bookings");
   return response.data;
 };
+
+export const deleteBooking = async (bookingId) => {
+  await apiClient.delete(`/bookings/${bookingId}`);
+};

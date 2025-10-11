@@ -35,4 +35,10 @@ public class BookingController {
     public ResponseEntity<List<BookingResponse>> getMyBookings() {
         return ResponseEntity.ok(bookingService.getMyBookings());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBooking(@PathVariable Long id){
+        bookingService.deleteBooking(id);
+        return ResponseEntity.noContent().build();
+    }
 }

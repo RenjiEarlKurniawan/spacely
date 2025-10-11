@@ -98,4 +98,12 @@ public class BookingService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    public void deleteBooking(Long bookingId){
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        bookingRepository.delete(booking);
+    }
 }

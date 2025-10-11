@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { getMyBookings } from "@/services/bookingService";
+import { getMyBookings, deleteBooking } from "@/services/bookingService";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@/components/ui/button";
 
 const MyBookingPage = () => {
   const [bookings, setBookings] = useState([]);
@@ -22,6 +23,18 @@ const MyBookingPage = () => {
     };
     fetchMyBookings();
   }, []);
+
+  const handleCancelBooking = async (bookingId) => {
+    if (window.confirm("Are you sure want to cancel this booking?")) {
+      try {
+        await deleteBooking(bookingId);
+        setBookings((currentBookings) => currentBookings.filter((b) => b.id !== bookingId));
+      } catch (err) {
+        console.error("failed to cancel booking", err);
+        alert("failed to cancel booking");
+      }
+    }
+  };
 
   if (isLoading) {
     return (
@@ -53,6 +66,11 @@ const MyBookingPage = () => {
               <TableCell className="font-medium">{booking.roomName}</TableCell>
               <TableCell>{new Date(booking.startTime).toLocaleString()}</TableCell>
               <TableCell>{new Date(booking.endTime).toLocaleString()}</TableCell>
+              <TableCell className="text-right">
+                <Button variant="destructive" size="sm" onClick={() => handleCancelBooking(booking.id)}>
+                  Cancel
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
